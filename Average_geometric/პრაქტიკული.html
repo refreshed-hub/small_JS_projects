@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> საშუალო გეომეტრიული</title>
+</head>
+<body>
+    <div>
+        <form id="Input">
+            <div>
+                <label for="A">შეიყვანეთ A რიცხვი </label>
+                <input id="A" name="A" type="number">
+                <span>რომელიც იქნება საწყისი რიცხვი რიცხვთა მასივის</span>
+            </div>
+            <div>
+                <label for="B">შეივანეთ B რიცხვი</label>
+                <input id="B" name="B" type="number">
+                <span>რომელიც იქნება ბოლო რიცხვი რიცხვთა მასივის</span>
+            </div>
+            <div>
+                <label for="C">შეივანეთ C რიცხვი</label>
+                <input id="C" name="C" type="number">
+                <span>რომელის ჯერადების კუბის საშუალო უნდა ვიპოვოთ</span>
+            </div>
+        </form>
+        <button onclick="Calc()" type="button"> გამოთვლა</button>
+
+        <div id="table">
+            <table id="Answer">
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function Calc() {
+
+        let A = document.getElementById("A").value,
+            B = document.getElementById("B").value,
+            C = document.getElementById("C").value;
+        if (A && B && C) {
+            if (A > B) {
+                alert('პირველი რიცხვი უნდა იყოს ნაკლები ვიდრე ბოლო')
+                return
+            }
+            if (C == 0){
+                alert('C არ უნდა იყოს 0-ის ტოლი')
+                return
+            }
+            let NumArray = [];
+            for (let i = parseInt(A); i <= B; i++) {
+                NumArray.push(i)
+            }
+            let MulArray = [];
+            let ProdAll  = 1;
+            let CubArray = [];
+            for(let i in NumArray) {
+                if (C%NumArray[i] === 0){
+                    let b = Math.pow(NumArray[i],3)
+                    ProdAll = ProdAll * b
+                    MulArray.push(NumArray[i])
+                    CubArray.push(b)
+                    if (C == NumArray[i]) {
+                        break;
+                    }
+                }
+            }
+            let Geo = Math.pow(ProdAll, 1/CubArray.length);
+            if (typeof Geo !== 'number') {
+                alert('ესეთი გეომეტრიული საშუალო არ არსებობს შეიყვანეთ სხვა ციფრები')
+                return
+            }
+            document.getElementById('Answer').innerHTML = '' +
+                '<tr>\n' +
+                '                <th>C ჯერადი რიცხვებია</th>\n' +
+                '                <th>C ჯერადი რიცხვების კუბები</th>\n' +
+                '                <th>საშუალო გეომეტრიული</th>\n' +
+                '            </tr>'+
+                "<tr><td>"+MulArray.join(' , ')+"</td>" +
+                "<td>"+CubArray.join(' , ')+"</td>" +
+                "<td>"+Geo+"</td></tr>"
+        } else {
+            alert('შეავსეთ ყველა ველი')
+        }
+    }
+</script>
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
